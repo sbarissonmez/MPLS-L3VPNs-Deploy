@@ -1,5 +1,5 @@
 """
-Script used for MPLS L3VPN deployment using Nornir
+This script is designed for deploying MPLS L3VPNs using the Nornir automation framework.
 """
 
 from nornir import InitNornir
@@ -14,10 +14,10 @@ from net_utils import address, mask
 def l3vpn(task):
 
     """
-    Main function built for L3VPN deployment tasks
+    This is the main function created for L3VPN deployment tasks.
     """
     task1_result = task.run(
-        name=f"{task.host.name}: Creating VRFs Configuration",
+        name=f"{task.host.name}: VRFs Configuration Creating",
         task=template_file,
         template="vrf.j2",
         path="templates/",
@@ -26,13 +26,13 @@ def l3vpn(task):
     vrf_config = task1_result[0].result
 
     task2_result = task.run(
-        name=f"{task.host.name}: Configuring VRFs on PE Nodes",
+        name=f"{task.host.name}: VRFs Configuring on PE Router",
         task=send_configs,
         configs=vrf_config.split("\n"),
     )
 
     task3_result = task.run(
-        name=f"{task.host.name}: Create VRF to Interfaces Configuration",
+        name=f"{task.host.name}: VRFs Create for Interfaces Configuration",
         task=template_file,
         template=f"interfaces.j2",
         path="templates/",
@@ -43,13 +43,13 @@ def l3vpn(task):
     int_config = task3_result[0].result
 
     task4_result = task.run(
-        name=f"{task.host.name}: Configuring VRFs on Interfaces",
+        name=f"{task.host.name}: Interfaces VRFs Configuration",
         task=send_configs,
         configs=int_config.split("\n"),
     )
 
     task5_result = task.run(
-        name=f"{task.host.name}: Create BGP Neighbor Configuration",
+        name=f"{task.host.name}: BGP Neighbor Configuration Create",
         task=template_file,
         template=f"bgp.j2",
         path="templates/",
@@ -58,7 +58,7 @@ def l3vpn(task):
     bgp_config = task5_result[0].result
 
     task6_result = task.run(
-        name=f"{task.host.name}: Configuring BGP Neighbors under VRFs",
+        name=f"{task.host.name}: BGP Neighbors Configuring on VRFs",
         task=send_configs,
         configs=bgp_config.split("\n"),
     )
@@ -77,7 +77,7 @@ def l3vpn(task):
 def main():
 
     """
-    Main that calls l3vpn function
+    This is the main function that invokes the L3VPN function.
     """
 
     nornir = InitNornir(config_file="config.yaml")

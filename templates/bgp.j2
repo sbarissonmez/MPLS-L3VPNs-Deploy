@@ -1,4 +1,4 @@
-router bgp 12345
+router bgp 65000
 {% if data.bgp %}
  {% for nei in data.bgp.neighbors %}
  address-family ipv4 vrf {{ nei.vrf_name }}

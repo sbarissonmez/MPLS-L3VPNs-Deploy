@@ -8,7 +8,8 @@ from ntc_templates.parse import parse_output
 
 main_vrfs = []
 
-# Create list of VRFs defined in groups.yaml
+# The following code snippet creates a list of VRFs that are defined in the "groups.yaml" configuration file.
+
 with open("groups.yaml") as f:
     data = yaml.load(f, Loader=yaml.FullLoader)["pe"]["data"]["vrfs"]
     for vrf in data:
@@ -18,7 +19,7 @@ with open("groups.yaml") as f:
 def test_vrf():
 
     """
-    Main VRF test
+    This is the main function for testing VRFs.
     """
     os.environ[
         "NET_TEXTFSM"
@@ -38,19 +39,19 @@ def test_vrf():
             platform="cisco_ios", command="show vrf", data=result[host].result
         )
 
-        # Looping over all parsed VRFs to build new list
+        # This code loops through all parsed VRFs and creates a new list based on the results.
         for remote_vrf in vrf_parsed:
             remote_vrfs.append(remote_vrf["name"])
 
         set_diff = set(main_vrfs) - set(remote_vrfs)
 
-        # If a set difference is found, print the nice red output!
+        # If the program detects a set difference, it will display a visually distinct red output to alert the user.
         if set_diff:
             pretty(
-                f"[bold red]The following VRFs are not configured on {host}: {set_diff}[/bold red]"
+                f"[bold red]The VRFs listed below are not currently configured on {host}: {set_diff}[/bold red]"
             )
         else:
-            pretty(f"[bold blue]All VRF tests passed on router {host}[/bold blue]")
+            pretty(f"[bold blue]All VRF tests have passed successfully on the router {host}[/bold blue]")
 
 
 if __name__ == "__main__":
