@@ -1,6 +1,5 @@
 from netaddr import IPNetwork
 
-
 def address(add):
     "The following code will extract the IP address from a given network address, such as "10.0.0.1/24", and return only the IP portion, which in this case would be '10.0.0.1'"
     add = str(IPNetwork(add).ip)
